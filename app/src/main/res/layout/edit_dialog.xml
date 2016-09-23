@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/editword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入要添加的单词"
+        android:text=""
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/editmean"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入单词释义"
+        android:text=""
+        android:inputType="text"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editsam"
+        android:hint="请输入例句"
+        android:text=""
+        android:inputType="text"/>
+
+</LinearLayout>
