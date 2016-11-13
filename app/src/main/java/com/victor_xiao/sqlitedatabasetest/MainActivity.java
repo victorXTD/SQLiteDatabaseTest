@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                     delete(strWord);
 
                     Log.d("db", "editing");
-                    InsertDialog(strWord,strMeaning,strSample);
+                    InsertDialog(strWord, strMeaning, strSample);
                 }
                 getAll();
                 break;
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void InsertDialog(final String OldWord,final String OldMeaning,final String OldSample) {
+    private void InsertDialog(final String OldWord, final String OldMeaning, final String OldSample) {
 
 
         final SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -321,6 +321,7 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = db.query(Words.Word.TABLE_NAME, null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
+                String id = cursor.getString(cursor.getColumnIndex(Words.Word._ID));
                 String word = cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_WORD));
                 String mean = cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_MEANING));
                 String sample = cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_SAMPLE));
@@ -332,14 +333,17 @@ public class MainActivity extends AppCompatActivity {
                 item.put(samples, sample);
                 items.add(item);
 
-//                Log.d("db", "word is " + word);
-//                Log.d("db", "meaning " + mean);
-//                Log.d("db", "here is a sample: " + sample);
+                Log.d("db", "word is " + word);
+                Log.d("db", "ID is " + id);
+                Log.d("db", "meaning " + mean);
+                Log.d("db", "here is a sample: " + sample);
             } while (cursor.moveToNext());
         }
         cursor.close();
 
-        SimpleAdapter adapter = new SimpleAdapter(this, items, R.layout.word_list, new String[]{words, means, samples}, new int[]{R.id.listword, R.id.listmeaning, R.id.listsample});
+        SimpleAdapter adapter = new SimpleAdapter(this, items, R.layout.word_list,
+                new String[]{words, means, samples}, new int[]{R.id.listword,
+                R.id.listmeaning, R.id.listsample});
 
         list.setAdapter(adapter);
     }
@@ -382,7 +386,7 @@ public class MainActivity extends AppCompatActivity {
 
         final EditText SearchWord;
 
-        SearchWord=(EditText)v.findViewById(R.id.txt_search_word);
+        SearchWord = (EditText) v.findViewById(R.id.txt_search_word);
 
         builder.setTitle("查找单词")//标题
                 //确定按钮及其动作
@@ -391,23 +395,23 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
 
 
-                        Log.d("db",SearchWord.getText().toString());
-                        String txtSearchWord=SearchWord.getText().toString();
-                        Log.d("db",txtSearchWord);
+                        Log.d("db", SearchWord.getText().toString());
+                        String txtSearchWord = SearchWord.getText().toString();
+                        Log.d("db", txtSearchWord);
 
 
-                        ArrayList<Map<String, String>> items=null;
+                        ArrayList<Map<String, String>> items = null;
 
-                         items=Search(txtSearchWord);
+                        items = Search(txtSearchWord);
 
-                        if(items.size()>0) {
-                            Bundle bundle=new Bundle();
-                            bundle.putSerializable("result",items);
-                            Intent intent=new Intent(MainActivity.this,SearchActivity.class);
+                        if (items.size() > 0) {
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("result", items);
+                            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                             intent.putExtras(bundle);
                             startActivity(intent);
-                        }else
-                            Toast.makeText(MainActivity.this,"没有找到", Toast.LENGTH_LONG).show();
+                        } else
+                            Toast.makeText(MainActivity.this, "没有找到", Toast.LENGTH_LONG).show();
 
 
                     }
@@ -440,7 +444,7 @@ public class MainActivity extends AppCompatActivity {
                 Words.Word.COLUMN_NAME_WORD + " DESC";
 
         String selection = Words.Word.COLUMN_NAME_WORD + " LIKE ?";
-        String[] selectionArgs = {"%"+strWordSearch+"%"};
+        String[] selectionArgs = {"%" + strWordSearch + "%"};
 
         Cursor c = db.query(
                 Words.Word.TABLE_NAME,  // The table to query
